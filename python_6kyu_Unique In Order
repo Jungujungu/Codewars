@@ -1,0 +1,10 @@
+def unique_in_order(iterable):
+    output = []
+    for i, v in enumerate(iterable):
+        if i == 0:
+            if v not in output:
+                output.append(v)
+        else:
+            if v != output[-1]:
+                output.append(v)
+    return output

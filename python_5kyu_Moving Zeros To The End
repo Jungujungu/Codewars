@@ -1,0 +1,12 @@
+def move_zeros(array):
+    keep_num = []
+    zero_num = []
+    for num in list(array):
+        if num != 0:
+            keep_num.append(num)
+        else:
+            zero_num.append(num)
+            
+    array = keep_num + zero_num
+
+    return array

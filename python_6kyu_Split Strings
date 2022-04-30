@@ -1,0 +1,12 @@
+def solution(s):
+    ss = []
+    split_s = list(s)
+    for x in range(len(split_s)):
+        if x % 2 == 0:
+            if x < len(split_s)-1:
+                add_to = split_s[x] + split_s[x+1]
+                ss.append(add_to)
+            else:
+                add_to = split_s[x] + '_'
+                ss.append(add_to)
+    return ss
