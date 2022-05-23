@@ -1,0 +1,11 @@
+def rot13(message):
+    hidden_message = []
+    for x in message:
+        if ((ord(x) >= 65) & (ord(x) <= 77)) | ((ord(x) >= 97) & (ord(x) <= 109)):
+            hidden_message.append(chr(ord(x)+13))
+        elif ((ord(x) >= 78) & (ord(x) <= 90)) | ((ord(x) >= 110) & (ord(x) <= 122)):
+            hidden_message.append(chr(ord(x)-13))
+        else:
+            hidden_message.append(x)
+    
+    return ''.join(hidden_message)

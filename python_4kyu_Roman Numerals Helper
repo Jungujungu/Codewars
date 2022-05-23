@@ -1,0 +1,108 @@
+class RomanNumerals:
+
+    def to_roman(val):
+        num2RN = []
+        
+        # number to each digit
+        thou_digit = val // 1000
+        hund_digit = (val // 100) - (10 * thou_digit)
+        ten_digit = (val // 10) - (100 * thou_digit) - (10 * hund_digit)
+        one_digit = val - (1000 * thou_digit) - (100 * hund_digit) - (10 * ten_digit)
+        
+        # thou_digit
+        if thou_digit == 3:
+            num2RN.append('MMM')
+        elif thou_digit == 2:
+            num2RN.append('MM')
+        elif thou_digit == 1:
+            num2RN.append('M')
+        
+        # hund_digit
+        if hund_digit == 9:
+            num2RN.append('CM')
+        elif hund_digit == 8:
+            num2RN.append('DCCC')
+        elif hund_digit == 7:
+            num2RN.append('DCC')
+        elif hund_digit == 6:
+            num2RN.append('DC')
+        elif hund_digit == 5:
+            num2RN.append('D')
+        elif hund_digit == 4:
+            num2RN.append('CD')
+        elif hund_digit == 3:
+            num2RN.append('CCC')
+        elif hund_digit == 2:
+            num2RN.append('CC')
+        elif hund_digit == 1:
+            num2RN.append('C')
+            
+        # ten_digit
+        if ten_digit == 9:
+            num2RN.append('XC')
+        elif ten_digit == 8:
+            num2RN.append('LXXX')
+        elif ten_digit == 7:
+            num2RN.append('LXX')
+        elif ten_digit == 6:
+            num2RN.append('LX')
+        elif ten_digit == 5:
+            num2RN.append('L')
+        elif ten_digit == 4:
+            num2RN.append('XL')
+        elif ten_digit == 3:
+            num2RN.append('XXX')
+        elif ten_digit == 2:
+            num2RN.append('XX')
+        elif ten_digit == 1:
+            num2RN.append('X')
+        
+        # one_digit
+        if one_digit == 9:
+            num2RN.append('IX')
+        elif one_digit == 8:
+            num2RN.append('VIII')
+        elif one_digit == 7:
+            num2RN.append('VII')
+        elif one_digit == 6:
+            num2RN.append('VI')
+        elif one_digit == 5:
+            num2RN.append('V')
+        elif one_digit == 4:
+            num2RN.append('IV')
+        elif one_digit == 3:
+            num2RN.append('III')
+        elif one_digit == 2:
+            num2RN.append('II')
+        elif one_digit == 1:
+            num2RN.append('I')
+        
+        return ''.join(num2RN)
+
+    def from_roman(roman_num):
+        RNsum = 0
+        temp_num = []
+        for x in range(len(roman_num)):
+            if roman_num[x] == 'M':
+                temp_num.append(1000)
+            elif roman_num[x] == 'D':
+                temp_num.append(500)
+            elif roman_num[x] == 'C':
+                temp_num.append(100)
+            elif roman_num[x] == 'L':
+                temp_num.append(50)
+            elif roman_num[x] == 'X':
+                temp_num.append(10)
+            elif roman_num[x] == 'V':
+                temp_num.append(5)
+            elif roman_num[x] == 'I':
+                temp_num.append(1)
+
+        for y in range(len(temp_num)-1):
+            if temp_num[y] >= temp_num[y+1]:
+                RNsum += temp_num[y]
+            else:
+                RNsum -= temp_num[y]
+        RNsum += temp_num[-1]
+        
+        return RNsum

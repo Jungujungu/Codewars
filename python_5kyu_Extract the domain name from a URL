@@ -1,0 +1,19 @@
+def domain_name(url):
+    try:
+        start_pos = url.index('www.')
+        end_pos = url.find('.', url.find('.') + 1)
+        domain = url[start_pos+4:end_pos]
+    except:
+        try:
+            start_pos = url.index('http://')
+            end_pos = url.find('.', 1)
+            domain = url[start_pos+7:end_pos]
+        except:
+            try:
+                start_pos = url.index('https://')
+                end_pos = url.find('.', 1)
+                domain = url[start_pos+8:end_pos]
+            except:
+                end_pos = url.find('.', 1)
+                domain = url[:end_pos]
+    return domain

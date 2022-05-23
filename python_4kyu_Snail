@@ -1,0 +1,37 @@
+def snail(snail_map):
+    
+    def transpose(l1):
+        l2 =[[row[i] for row in l1] for i in range(len(l1[0]))]
+        return l2
+    
+    snail_return = []
+    n=1
+        
+    while len(snail_map) > 0:
+        if (n % 4) == 1:
+            print(snail_map)
+            for x in snail_map[0]:
+                snail_return.append(x)
+            snail_map.remove(snail_map[0])
+        elif (n % 4) == 2:
+            print(snail_map)
+            snail_t = transpose(snail_map)
+            for x in snail_t[-1]:
+                snail_return.append(x)
+            snail_t.remove(snail_t[-1])
+            snail_map = transpose(snail_t)
+        elif (n % 4) == 3:
+            print(snail_map)
+            for x in range(len(snail_map[-1])):
+                snail_return.append(snail_map[-1][len(snail_map[-1])-x-1])
+            snail_map.remove(snail_map[-1])
+        else:
+            print(snail_map)
+            snail_t = transpose(snail_map)
+            for x in range(len(snail_t[0])):
+                snail_return.append(snail_t[0][len(snail_t[0])-x-1])
+            snail_t.remove(snail_t[0])
+            snail_map = transpose(snail_t)
+            
+        n += 1
+    return snail_return

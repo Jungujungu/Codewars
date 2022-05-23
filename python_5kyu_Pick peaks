@@ -1,0 +1,23 @@
+def pick_peaks(arr):
+    peak_dict = {'pos':[], 'peaks':[]}
+    max_pos = 'initial'
+    for x in range(len(arr)):
+        if (x != 0) & (x < (len(arr)-1)):
+            if arr[x-1] < arr[x]:
+                max_pos = x
+                max_num = arr[x]
+                if arr[x+1] < arr[x]:
+                    peak_dict['pos'].append(x)
+                    peak_dict['peaks'].append(arr[x])
+            elif arr[x-1] == arr[x]:
+                if arr[x+1] < arr[x]:
+                    if max_pos == 'initial':
+                        pass
+                    elif max_pos in peak_dict['pos']:
+                        pass
+                    else:
+                        peak_dict['pos'].append(max_pos)
+                        peak_dict['peaks'].append(max_num)
+    
+    
+    return peak_dict

@@ -1,0 +1,83 @@
+def format_duration(seconds):
+    # time duration in seconds
+    onesec = 1
+    onemin = 60
+    onehr = 3600
+    oneday = 3600*24
+    oneyear = 3600*24*365
+    
+    # year
+    if (seconds // oneyear) == 0:
+        year_format = None
+    elif (seconds // oneyear) == 1:
+        year_format = f'{(seconds // oneyear)} year'
+    else:
+        year_format = f'{(seconds // oneyear)} years'
+    noyear_seconds = seconds - (seconds // oneyear) * oneyear
+
+    # day
+    if (noyear_seconds // oneday) == 0:
+        day_format = None
+    elif (noyear_seconds // oneday) == 1:
+        day_format = f'{noyear_seconds // oneday} day'
+    else:
+        day_format = f'{noyear_seconds // oneday} days'
+    noday_seconds = noyear_seconds - (noyear_seconds // oneday) * oneday
+
+    # hour
+    if (noday_seconds // onehr) == 0:
+        hr_format = None
+    elif (noday_seconds // onehr) == 1:
+        hr_format = f'{noday_seconds // onehr} hour'
+    else:
+        hr_format = f'{noday_seconds // onehr} hours'
+    nohr_seconds = noday_seconds - (noday_seconds // onehr) * onehr
+
+    # minute
+    if (nohr_seconds // onemin) == 0:
+        min_format = None
+    elif (nohr_seconds // onemin) == 1:
+        min_format = f'{nohr_seconds // onemin} minute'
+    else:
+        min_format = f'{nohr_seconds // onemin} minutes'        
+    nomin_seconds = nohr_seconds - (nohr_seconds // onemin) * onemin
+
+    # second
+    if (nomin_seconds) == 0:
+        sec_format = None
+    elif (nomin_seconds) == 1:
+        sec_format = f'{nomin_seconds} second'
+    else:
+        sec_format = f'{nomin_seconds} seconds' 
+    
+    # collect all the results above
+    format_list = [year_format, day_format, hr_format, min_format, sec_format]
+    
+    # remove None values and count how many formats are remained
+    count = 0
+    fin_list = []
+    for duration in format_list:
+        if duration is not None:
+            count += 1
+            fin_list.append(duration)
+    
+    # depends on the remain formats, the return should be different
+    # if all formats are None, it's now
+    if count == 0:
+        return 'now'
+    
+    # if there is one format not None, just return it
+    elif count == 1:
+        return fin_list[0]
+    
+    # if there are two formats not None, put " and " between
+    elif count == 2:
+        return ' and '.join(fin_list)
+    
+    # if there are more than two formats not None, use ", " & " and "
+    else:
+        forward_list = []
+        for x in range(count-1):
+            forward_list.append(fin_list[x])
+            forward_return = ', '.join(forward_list)
+        return f'{forward_return} and {fin_list[-1]}'

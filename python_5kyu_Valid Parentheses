@@ -1,0 +1,17 @@
+def valid_parentheses(string):
+    parentheses_order = []
+    for chr in string:
+        if chr in ['(', ')']:
+            parentheses_order.append(chr)
+    tester = 0
+    for x in parentheses_order:
+        if x == '(':
+            tester += 1
+        else:
+            tester -= 1
+        if (tester < 0):
+            return False
+    if tester != 0:
+        return False
+            
+    return True
