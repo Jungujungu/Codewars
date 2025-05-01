@@ -1,0 +1,11 @@
+import math
+
+def next_smaller_pronic(n):
+    # replace with your implementation
+
+    cand = math.floor(math.sqrt(n))
+    
+    while cand * (cand + 1) >= n:
+        cand -= 1
+
+    return cand * (cand+1)
