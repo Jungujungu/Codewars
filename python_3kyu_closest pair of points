@@ -1,0 +1,105 @@
+import math
+
+def dist_sq(p1, p2):
+    """Calculates the square of the Euclidean distance between two points."""
+    return (p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2
+
+def closest_in_strip_optimized(strip, min_dist_sq):
+    """
+    Finds the closest pair of points within a vertical strip (optimized).
+
+    Args:
+        strip: A list of points sorted by their y-coordinate.
+        min_dist_sq: The square of the minimum distance found so far.
+
+    Returns:
+        A tuple containing the closest pair of points in the strip and the
+        square of their distance. Returns (None, float('inf')) if no closer
+        pair is found.
+    """
+    min_dist_sq_strip = min_dist_sq
+    closest_strip_pair = None
+    n = len(strip)
+    for i in range(n):
+        # Compare with points whose y-coordinate is within min_dist
+        for j in range(i + 1, n):
+            if (strip[j][1] - strip[i][1]) ** 2 >= min_dist_sq_strip:
+                break  # Optimization: no need to check further
+            d_sq = dist_sq(strip[i], strip[j])
+            if d_sq < min_dist_sq_strip:
+                min_dist_sq_strip = d_sq
+                closest_strip_pair = (strip[i], strip[j])
+    return closest_strip_pair, min_dist_sq_strip
+
+def closest_pair_recursive_optimized(points_sorted_x, points_sorted_y):
+    """
+    Recursively finds the closest pair of points in a set of points (optimized strip check).
+
+    Args:
+        points_sorted_x: A list of points sorted by their x-coordinate.
+        points_sorted_y: A list of points sorted by their y-coordinate.
+
+    Returns:
+        A tuple containing the closest pair of points and the square of their distance.
+    """
+    n = len(points_sorted_x)
+    if n <= 3:
+        # Brute force if there are 3 or fewer points
+        min_dist_sq = float('inf')
+        closest = None
+        for i in range(n):
+            for j in range(i + 1, n):
+                d_sq = dist_sq(points_sorted_x[i], points_sorted_x[j])
+                if d_sq < min_dist_sq:
+                    min_dist_sq = d_sq
+                    closest = (points_sorted_x[i], points_sorted_x[j])
+        return closest, min_dist_sq
+
+    mid = n // 2
+    mid_point = points_sorted_x[mid]
+
+    # Divide the points into left and right halves
+    left_points_x = points_sorted_x[:mid]
+    right_points_x = points_sorted_x[mid:]
+    left_points_y = [p for p in points_sorted_y if p[0] <= mid_point[0]]
+    right_points_y = [p for p in points_sorted_y if p[0] > mid_point[0]]
+
+    # Recursively find the closest pair in the left and right halves
+    left_closest, left_min_dist_sq = closest_pair_recursive_optimized(left_points_x, left_points_y)
+    right_closest, right_min_dist_sq = closest_pair_recursive_optimized(right_points_x, right_points_y)
+
+    # Determine the closest pair so far
+    min_dist_sq = min(left_min_dist_sq, right_min_dist_sq)
+    if left_min_dist_sq <= right_min_dist_sq:
+        closest_pair_result = left_closest
+    else:
+        closest_pair_result = right_closest
+
+    # Check the strip (region near the dividing line)
+    strip = [p for p in points_sorted_y if abs(p[0] - mid_point[0]) < math.sqrt(min_dist_sq)]
+    closest_strip_pair, min_dist_sq_strip = closest_in_strip_optimized(strip, min_dist_sq)
+
+    # Return the best pair and distance
+    if closest_strip_pair is not None and min_dist_sq_strip < min_dist_sq:
+        return closest_strip_pair, min_dist_sq_strip
+    else:
+        return closest_pair_result, min_dist_sq
+
+def closest_pair(points):
+    """
+    Finds the closest pair of points in a list of 2D points using the
+    divide and conquer algorithm with an optimized strip check.
+
+    Args:
+        points: A list of tuples, where each tuple represents a 2D point (x, y).
+
+    Returns:
+        A tuple containing the closest pair of points and the Euclidean
+        distance between them.
+    """
+    points_sorted_x = sorted(points, key=lambda p: p[0])  # Sort points by x-coordinate
+    points_sorted_y = sorted(points, key=lambda p: p[1])  # Sort points by y-coordinate
+
+    closest, min_dist_sq = closest_pair_recursive_optimized(points_sorted_x, points_sorted_y)
+    min_distance = math.sqrt(min_dist_sq) if min_dist_sq != float('inf') else float('inf')
+    return closest
