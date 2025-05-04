@@ -1,0 +1,12 @@
+WITH CTE AS (
+  SELECT 
+  id,
+  split_part(last,'.',1)::int - split_part(first,'.',1)::int as first_diff,
+  split_part(last,'.',2)::int - split_part(first,'.',2)::int as second_diff,
+  split_part(last,'.',3)::int - split_part(first,'.',3)::int as third_diff,
+  split_part(last,'.',4)::int - split_part(first,'.',4)::int as fourth_diff 
+  
+  FROM ip_addresses
+)
+SELECT id, (first_diff * 256^3 + second_diff * 256^2 + third_diff * 256 + fourth_diff)::bigint as ips_between FROM CTE
+;
